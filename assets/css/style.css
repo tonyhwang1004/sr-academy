@@ -680,3 +680,95 @@ p { margin: 0 0 1.1em; max-width: var(--measure); }
 /* ---------- 도서 목록(태그 없는 버전) ---------- */
 .booklist--plain li { grid-template-columns: 1fr; padding-bottom: 7px; }
 .booklist--plain .bk-title { font-size: .9rem; }
+
+/* ---------- 학원 강점 슬라이더 ---------- */
+.section--slides { padding-top: 0; }
+.slider {
+  position: relative;
+  background: var(--bottle);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.slider::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background:
+    radial-gradient(760px 380px at 82% 14%, rgba(200,138,26,.18), transparent 62%),
+    repeating-linear-gradient(transparent 0 41px, rgba(255,255,255,.04) 41px 42px);
+}
+.slides {
+  display: flex;
+  transition: transform .62s cubic-bezier(.22,.7,.25,1);
+}
+.slide {
+  flex: 0 0 100%;
+  padding: clamp(52px, 7vw, 88px) clamp(28px, 7vw, 92px);
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+.slide-eyebrow {
+  font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--marigold); font-weight: 700; margin: 0 0 18px;
+}
+.slide-title {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 4.2vw, 3rem);
+  font-weight: 600; line-height: 1.2; letter-spacing: -.015em;
+  color: #F4F8F2; margin: 0 0 20px; max-width: 20ch;
+}
+.slide-title em {
+  font-style: normal;
+  background-image: linear-gradient(transparent 76%, rgba(200,138,26,.5) 76%);
+}
+.slide-body {
+  font-size: 1.02rem; line-height: 1.8; color: #C6D8CB;
+  max-width: 52ch; margin: 0 0 30px;
+}
+.slide-figure {
+  margin: 0; padding-top: 22px;
+  border-top: 1px solid rgba(255,255,255,.16);
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+}
+.slide-figure b {
+  font-family: var(--display); font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  font-weight: 700; color: var(--marigold); line-height: 1;
+}
+.slide-figure span { font-size: .88rem; color: #9FBCA9; letter-spacing: .02em; }
+
+.slider-btn {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.24);
+  color: #EAF1EA; font-size: 1.5rem; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s ease, border-color .2s ease;
+  backdrop-filter: blur(4px);
+}
+.slider-btn:hover { background: var(--marigold); border-color: var(--marigold); color: #1B1405; }
+.slider-prev { left: 18px; }
+.slider-next { right: 18px; }
+
+.slider-dots {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 5; display: flex; gap: 9px;
+}
+.slider-dots button {
+  width: 30px; height: 3px; padding: 0; border: 0; cursor: pointer;
+  background: rgba(255,255,255,.28); border-radius: 2px;
+  transition: background .25s ease;
+}
+.slider-dots button[aria-selected="true"] { background: var(--marigold); }
+
+@media (max-width: 720px) {
+  .slide { min-height: 400px; padding: 48px 22px 62px; }
+  .slider-btn { width: 38px; height: 38px; font-size: 1.25rem; }
+  .slider-prev { left: 10px; }
+  .slider-next { right: 10px; }
+  .slide-body { font-size: .96rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slides { transition: none; }
+}
