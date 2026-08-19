@@ -146,3 +146,73 @@ document.querySelectorAll('[data-year]').forEach(function (el) {
   go(0);
   start();
 })();
+
+// 7) 레벨 테스트 신청 폼
+(function () {
+  const form = document.getElementById('applyForm');
+  if (!form) return;
+
+  // ▼▼▼ Apps Script 웹앱 주소를 여기에 넣으세요 ▼▼▼
+  const ENDPOINT = 'APPS_SCRIPT_URL';
+
+  const btn = document.getElementById('afSubmit');
+  const msg = document.getElementById('afMsg');
+
+  function show(text, kind) {
+    msg.textContent = text;
+    msg.className = 'af-msg show ' + kind;
+  }
+
+  // 전화번호 자동 하이픈
+  const phone = document.getElementById('afPhone');
+  phone.addEventListener('input', function () {
+    let v = phone.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 7)      v = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7);
+    else if (v.length > 3) v = v.slice(0,3) + '-' + v.slice(3);
+    phone.value = v;
+  });
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name  = document.getElementById('afName');
+    const grade = document.getElementById('afGrade');
+    const agree = document.getElementById('afAgree');
+
+    [name, grade, phone].forEach(function (el) { el.removeAttribute('aria-invalid'); });
+
+    if (!name.value.trim())  { name.setAttribute('aria-invalid','true');  name.focus();  return show('학생 이름을 입력해 주세요.', 'err'); }
+    if (!grade.value)        { grade.setAttribute('aria-invalid','true'); grade.focus(); return show('학년을 선택해 주세요.', 'err'); }
+    if (phone.value.replace(/\D/g,'').length < 10) {
+      phone.setAttribute('aria-invalid','true'); phone.focus();
+      return show('연락처를 정확히 입력해 주세요.', 'err');
+    }
+    if (!agree.checked) { return show('개인정보 수집·이용에 동의해 주세요.', 'err'); }
+
+    btn.disabled = true;
+    btn.textContent = '신청 중...';
+    show('신청을 접수하는 중입니다...', 'ok');
+
+    const params = new URLSearchParams({
+      action: 'srLevelTest',
+      studentName:   name.value.trim(),
+      grade:         grade.value,
+      school:        document.getElementById('afSchool').value.trim(),
+      parentPhone:   phone.value.trim(),
+      preferredTime: document.getElementById('afTime').value,
+      memo:          document.getElementById('afMemo').value.trim()
+    });
+
+    try {
+      if (ENDPOINT === 'APPS_SCRIPT_URL') throw new Error('endpoint not set');
+      await fetch(ENDPOINT + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
+      form.reset();
+      show('신청이 접수되었습니다. 1~2일 내에 연락드리겠습니다. 감사합니다.', 'ok');
+      btn.textContent = '신청 완료';
+    } catch (err) {
+      show('접수 중 문제가 생겼습니다. 010-4602-1953으로 연락 주시면 바로 도와드리겠습니다.', 'err');
+      btn.disabled = false;
+      btn.textContent = '레벨 테스트 신청하기';
+    }
+  });
+})();
