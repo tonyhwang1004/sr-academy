@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SR Academy — 원서와 번역서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bottle:#0E3B2C;
+  --bottle-deep:#0A2D22;
+  --marigold:#C88A1A;
+  --sage:#E6ECE3;
+  --card:#FBFAF7;
+  --moss:#6F8F7A;
+  --ink:#16261F;
+  --display:'Fraunces',Georgia,serif;
+  --displayKR:'Noto Serif KR',Georgia,serif;
+  --body:'Karla','Noto Sans KR',system-ui,sans-serif;
+  --bodyKR:'Noto Sans KR',system-ui,sans-serif;
+  --dur:14s;               /* 슬라이드 한 장이 머무는 시간 */
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--bottle-deep)}
+body{
+  font-family:var(--bodyKR);
+  color:var(--card);
+  -webkit-font-smoothing:antialiased;
+  cursor:none;
+}
+
+/* ── 무대 ───────────────────────────────────────── */
+.stage{position:fixed;inset:0;display:grid;place-items:stretch}
+
+.slide{
+  grid-area:1/1;
+  position:relative;
+  display:flex;flex-direction:column;
+  padding:4.2vh 5vw 3.4vh;
+  opacity:0;visibility:hidden;
+  transition:opacity 1.1s ease;
+  background:
+    radial-gradient(120% 90% at 22% 12%, #14503B 0%, transparent 62%),
+    radial-gradient(100% 80% at 88% 88%, #0C4433 0%, transparent 58%),
+    var(--bottle);
+}
+.slide.on{opacity:1;visibility:visible}
+.slide.on .drift{animation:drift 60s ease-in-out infinite alternate}
+
+/* 번인 방지 — 아주 느린 이동 */
+@keyframes drift{
+  from{transform:translate3d(-0.5vw,-0.5vh,0)}
+  to  {transform:translate3d(0.5vw,0.5vh,0)}
+}
+
+/* ── 머리·꼬리 ───────────────────────────────────── */
+.head,.foot{
+  display:flex;align-items:center;justify-content:space-between;
+  flex:0 0 auto;
+}
+.mark{
+  display:flex;align-items:baseline;gap:.85em;
+  font-family:var(--body);
+  font-size:1.55vh;font-weight:700;
+  letter-spacing:.34em;text-transform:uppercase;
+  color:var(--marigold);
+}
+.mark span{color:rgba(230,236,227,.42);letter-spacing:.22em}
+.stage-tag{
+  font-family:var(--body);
+  font-size:1.5vh;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(230,236,227,.5);
+  border:1px solid rgba(230,236,227,.22);
+  padding:.55em 1.3em;border-radius:100px;
+}
+.foot{margin-top:auto;padding-top:2.4vh}
+.dots{display:flex;gap:.75vh}
+.dot{
+  width:.85vh;height:.85vh;border-radius:50%;
+  background:rgba(230,236,227,.2);
+  transition:background .5s,transform .5s;
+}
+.dot.now{background:var(--marigold);transform:scale(1.4)}
+.site{
+  font-family:var(--body);
+  font-size:1.5vh;letter-spacing:.16em;
+  color:rgba(230,236,227,.34);
+}
+
+/* ── 책 한 쌍 ────────────────────────────────────── */
+.pair{
+  flex:1;display:grid;
+  grid-template-columns:1fr auto 1.34fr;
+  align-items:center;gap:3.2vw;
+  padding:1vh 0;
+}
+
+.side{display:flex;flex-direction:column;align-items:center;gap:2.4vh}
+.side-label{
+  font-family:var(--body);
+  font-size:1.5vh;font-weight:700;
+  letter-spacing:.26em;text-transform:uppercase;
+}
+.ko .side-label{color:rgba(230,236,227,.4)}
+.en .side-label{color:var(--marigold)}
+
+/* 책 오브젝트 — 실제 표지가 아니라 타이포로 만든 것 */
+.book{
+  position:relative;
+  border-radius:.4vh 1vh 1vh .4vh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;
+  padding:3.4vh 2.6vh;
+  overflow:hidden;
+}
+.book::before{                       /* 책등 */
+  content:'';position:absolute;left:0;top:0;bottom:0;width:1.5vh;
+  background:linear-gradient(90deg,rgba(0,0,0,.34),rgba(0,0,0,.08) 62%,transparent);
+}
+.book::after{                        /* 천 질감 */
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 1px,transparent 1px 3px);
+  opacity:.5;
+}
+.book .rule{width:38%;height:1px;opacity:.42;margin:1.5vh 0}
+.book .t{
+  font-family:var(--display);
+  font-weight:600;line-height:1.14;
+  letter-spacing:-.012em;
+  word-break:keep-all;
+}
+.book .a{
+  font-family:var(--body);
+  font-size:1.5vh;letter-spacing:.13em;
+  text-transform:uppercase;opacity:.68;
+}
+
+/* 한국어판 — 뒤로 물러나 있음 */
+.ko .book{
+  width:20vw;height:29vh;
+  background:linear-gradient(158deg,#DDE4DA,#C9D4C7);
+  color:#2C3D33;
+  box-shadow:0 1.6vh 4vh rgba(0,0,0,.34);
+  transform:rotate(-1.6deg) scale(.94);
+  filter:saturate(.62);
+}
+.ko .book .t{font-family:var(--displayKR);font-size:3.1vh}
+.ko .book .rule{background:#2C3D33}
+
+/* 원서 — 앞으로 나와 있음 */
+.en .book{
+  width:26.5vw;height:38vh;
+  background:linear-gradient(158deg,var(--card),#EFEBE0);
+  color:var(--ink);
+  box-shadow:0 2.6vh 6.5vh rgba(0,0,0,.46);
+  transform:rotate(1.1deg);
+  border-top:.55vh solid var(--marigold);
+}
+.en .book .t{font-size:4.5vh}
+.en .book .rule{background:var(--marigold);opacity:.85}
+
+.cap{text-align:center;max-width:27vw}
+.cap .k{
+  font-family:var(--displayKR);
+  font-size:2.5vh;font-weight:600;line-height:1.4;
+  word-break:keep-all;
+}
+.ko .cap .k{font-size:2.1vh;color:rgba(230,236,227,.62)}
+.cap .sub{
+  font-family:var(--body);
+  font-size:1.6vh;letter-spacing:.1em;
+  color:rgba(230,236,227,.42);margin-top:.7vh;
+}
+
+/* 가운데 연결부 — 이 화면의 핵심 */
+.link{display:flex;flex-direction:column;align-items:center;gap:1.5vh}
+.link .arrow{
+  width:5.5vw;height:1px;background:var(--marigold);
+  position:relative;opacity:.75;
+}
+.link .arrow::after{
+  content:'';position:absolute;right:0;top:-.42vh;
+  border-left:.85vh solid var(--marigold);
+  border-top:.45vh solid transparent;
+  border-bottom:.45vh solid transparent;
+}
+.link .t{
+  font-family:var(--displayKR);
+  font-size:1.9vh;font-weight:600;
+  color:var(--marigold);letter-spacing:.02em;
+  white-space:nowrap;
+}
+
+/* 아래 한 줄 설명 */
+.note{
+  flex:0 0 auto;text-align:center;
+  border-top:1px solid rgba(230,236,227,.14);
+  padding-top:2.6vh;margin-top:1vh;
+}
+.note p{
+  font-family:var(--displayKR);
+  font-size:2.9vh;font-weight:600;line-height:1.5;
+  word-break:keep-all;
+}
+.note p em{font-style:normal;color:var(--marigold)}
+
+/* ── 표지 슬라이드 ───────────────────────────────── */
+.cover{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:3vh}
+.cover .big{
+  font-family:var(--display);
+  font-size:13vh;font-weight:600;line-height:.98;
+  letter-spacing:-.028em;
+}
+.cover .big i{font-style:normal;position:relative;display:inline-block}
+.cover .big i::after{
+  content:'';position:absolute;left:-.04em;right:-.04em;bottom:.1em;height:.16em;
+  background:var(--marigold);opacity:.85;z-index:-1;
+}
+.cover .lead{
+  font-family:var(--displayKR);
+  font-size:3.4vh;font-weight:500;line-height:1.72;
+  color:rgba(230,236,227,.82);word-break:keep-all;max-width:52vw;
+}
+.cover .since{
+  font-family:var(--body);
+  font-size:1.7vh;letter-spacing:.4em;text-transform:uppercase;
+  color:rgba(230,236,227,.4);
+}
+
+/* ── 레벨 계단 ───────────────────────────────────── */
+.ladder{flex:1;display:flex;flex-direction:column;justify-content:center;gap:4vh}
+.ladder h2{
+  font-family:var(--displayKR);
+  font-size:5vh;font-weight:700;text-align:center;letter-spacing:-.02em;
+}
+.ladder h2 em{font-style:normal;color:var(--marigold)}
+.steps{display:flex;align-items:flex-end;justify-content:center;gap:.9vw;height:34vh}
+.step{
+  flex:1;max-width:8vw;
+  background:linear-gradient(180deg,rgba(230,236,227,.16),rgba(230,236,227,.05));
+  border:1px solid rgba(230,236,227,.2);
+  border-radius:.8vh .8vh 0 0;
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+  padding:1.6vh .6vh 1.8vh;gap:.8vh;
+}
+.step.top{
+  background:linear-gradient(180deg,rgba(200,138,26,.34),rgba(200,138,26,.1));
+  border-color:rgba(200,138,26,.55);
+}
+.step .n{
+  font-family:var(--display);
+  font-size:2.3vh;font-weight:600;letter-spacing:.01em;
+}
+.step .g{
+  font-family:var(--body);
+  font-size:1.35vh;letter-spacing:.12em;
+  color:rgba(230,236,227,.48);
+}
+.ladder .foot-note{
+  text-align:center;font-family:var(--displayKR);
+  font-size:2.5vh;font-weight:500;color:rgba(230,236,227,.7);
+}
+
+/* ── 마지막 안내 ─────────────────────────────────── */
+.close{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:3.4vh}
+.close .h{
+  font-family:var(--displayKR);
+  font-size:6.4vh;font-weight:700;line-height:1.28;letter-spacing:-.024em;
+  word-break:keep-all;
+}
+.close .h em{font-style:normal;color:var(--marigold)}
+.close .row{display:flex;gap:2vw;flex-wrap:wrap;justify-content:center}
+.info{
+  border:1px solid rgba(230,236,227,.22);
+  border-radius:1.2vh;padding:2.4vh 3.4vh;
+  min-width:20vw;
+}
+.info .l{
+  font-family:var(--body);
+  font-size:1.5vh;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--marigold);margin-bottom:1vh;
+}
+.info .v{font-family:var(--displayKR);font-size:3.1vh;font-weight:600}
+.info .s{font-size:1.7vh;color:rgba(230,236,227,.5);margin-top:.6vh}
+
+/* ── 조작 안내 (마우스 움직이면 잠깐 표시) ─────────── */
+.help{
+  position:fixed;left:50%;bottom:2.4vh;transform:translateX(-50%);
+  background:rgba(10,45,34,.94);border:1px solid rgba(230,236,227,.2);
+  border-radius:100px;padding:1vh 2.4vh;
+  font-family:var(--bodyKR);font-size:1.6vh;color:rgba(230,236,227,.8);
+  opacity:0;transition:opacity .4s;pointer-events:none;z-index:50;
+  white-space:nowrap;
+}
+.help.show{opacity:1}
+.paused .help{opacity:1}
+
+@media (prefers-reduced-motion:reduce){
+  .slide{transition:none}
+  .slide.on .drift{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <!-- 1. 표지 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">Since 2004</div>
+    </div>
+    <div class="cover drift">
+      <div class="big">Born to <i>Read.</i></div>
+      <p class="lead">부모님이 한국어로 읽으신 그 책을,<br>아이는 원서로 읽습니다.</p>
+      <div class="since">Sue Reading Club · Songdo</div>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
+  </section>
+
+  <!-- 2~10. 책 한 쌍 -->
+  <section class="slide" data-pair
+    data-stage="SR Level 2"
+    data-ko-t="아멜리아 베델리아" data-ko-a="Peggy Parish" data-ko-k="아멜리아 베델리아"
+    data-en-t="Amelia Bedelia" data-en-a="Peggy Parish" data-en-k="Amelia Bedelia"
+    data-note="말을 곧이곧대로 듣는 가정부 이야기.<br><em>말장난을 이해해야 웃을 수 있습니다.</em>"></section>
+
+  <section class="slide" data-pair
+    data-stage="SR Level 5"
+    data-ko-t="마법의 시간여행" data-ko-a="Mary Pope Osborne" data-ko-k="마법의 시간여행"
+    data-en-t="Magic Tree House" data-en-a="Mary Pope Osborne" data-en-k="Magic Tree House"
+    data-note="한 권으로 끝나지 않는 시리즈.<br><em>긴 이야기를 끝까지 붙잡는 힘을 기릅니다.</em>"></section>
+
+  <section class="slide" data-pair
+    data-stage="SR Level 6"
+    data-ko-t="할머니는 도둑" data-ko-a="David Walliams" data-ko-k="할머니는 도둑"
+    data-en-t="Gangsta Granny" data-en-a="David Walliams" data-en-k="Gangsta Granny"
+    data-note="지루한 할머니의 비밀스러운 과거.<br><em>한 문단 쓰기에서 완결된 에세이로 넘어가는 시기에 읽습니다.</em>"></section>
+
+  <section class="slide" data-pair
+    data-stage="중등 과정 · Novel"
+    data-ko-t="아름다운 아이" data-ko-a="R. J. Palacio" data-ko-k="아름다운 아이"
+    data-en-t="Wonder" data-en-a="R. J. Palacio" data-en-k="Wonder"
+    data-note="같은 사건을 여러 인물의 눈으로 다시 봅니다.<br><em>관점이 바뀌면 이야기가 달라진다는 것을 배웁니다.</em>"></section>
+
+  <section class="slide" data-pair
+    data-stage="중등 과정 · Novel"
+    data-ko-t="손도끼" data-ko-a="Gary Paulsen" data-ko-k="손도끼"
+    data-en-t="Hatchet" data-en-a="Gary Paulsen" data-en-k="Hatchet"
+    data-note="숲에 홀로 남겨진 열세 살 소년.<br><em>인물이 어떻게 변해가는지를 추적하며 읽습니다.</em>"></section>
+
+  <section class="slide" data-pair
+    data-stage="중등 과정 · Novel"
+    data-ko-t="기억 전달자" data-ko-a="Lois Lowry" data-ko-k="기억 전달자"
+    data-en-t="The Giver" data-en-a="Lois Lowry" data-en-k="The Giver"
+    data-note="고통도 슬픔도 없앤 완벽한 사회.<br><em>읽고 나면 토론할 말이 생기는 책입니다.</em>"></section>
+
+  <section class="slide" data-pair
+    data-stage="중등 과정 · Novel"
+    data-ko-t="헝거 게임" data-ko-a="Suzanne Collins" data-ko-k="헝거 게임"
+    data-en-t="The Hunger Games" data-en-a="Suzanne Collins" data-en-k="The Hunger Games"
+    data-note="500쪽 가까운 장편을 원서로 완독합니다.<br><em>끝까지 읽어낸 경험이 다음 책을 쉽게 만듭니다.</em>"></section>
+
+  <section class="slide" data-pair
+    data-stage="중등 과정 · Nonfiction"
+    data-ko-t="사피엔스" data-ko-a="Yuval Noah Harari" data-ko-k="사피엔스"
+    data-en-t="Sapiens" data-en-a="Yuval Noah Harari" data-en-k="Sapiens"
+    data-note="이야기책에서 논픽션으로.<br><em>사실과 해석을 구분하며 읽는 훈련이 시작됩니다.</em>"></section>
+
+  <section class="slide" data-pair
+    data-stage="중등 과정 · Debate"
+    data-ko-t="정의란 무엇인가" data-ko-a="Michael Sandel" data-ko-k="정의란 무엇인가"
+    data-en-t="Justice" data-en-a="Michael Sandel" data-en-k="Justice"
+    data-note="정답이 없는 질문 앞에서 근거를 세웁니다.<br><em>읽은 것을 말로 겨루는 단계입니다.</em>"></section>
+
+  <!-- 11. 레벨 계단 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">SR Levels</div>
+    </div>
+    <div class="ladder drift">
+      <h2>학년이 아니라 <em>읽는 힘</em>으로 반을 정합니다.</h2>
+      <div class="steps">
+        <div class="step" style="height:34%"><div class="n">Phonics</div><div class="g">유아·초저</div></div>
+        <div class="step" style="height:41%"><div class="n">Pre-K</div><div class="g">초저</div></div>
+        <div class="step" style="height:49%"><div class="n">Level 1</div><div class="g">초저·초중</div></div>
+        <div class="step" style="height:57%"><div class="n">Level 2</div><div class="g">초중</div></div>
+        <div class="step" style="height:65%"><div class="n">Level 3</div><div class="g">초중·초고</div></div>
+        <div class="step" style="height:73%"><div class="n">Level 4</div><div class="g">초고</div></div>
+        <div class="step" style="height:81%"><div class="n">Level 5</div><div class="g">초고</div></div>
+        <div class="step" style="height:90%"><div class="n">Level 6</div><div class="g">예비중</div></div>
+        <div class="step top" style="height:100%"><div class="n">중등</div><div class="g">중학생</div></div>
+      </div>
+      <p class="foot-note">레벨은 고정이 아닙니다. 학기 중에도 아이의 속도에 따라 반을 조정합니다.</p>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
+  </section>
+
+  <!-- 12. 마지막 안내 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">Level Test</div>
+    </div>
+    <div class="close drift">
+      <p class="h">지금 어디쯤인지,<br><em>60분이면 알 수 있습니다.</em></p>
+      <div class="row">
+        <div class="info">
+          <div class="l">Tel</div>
+          <div class="v">010-4602-1953</div>
+          <div class="s">전화 상담은 오후 1시 이후</div>
+        </div>
+        <div class="info">
+          <div class="l">Web</div>
+          <div class="v">suereadingclub.co.kr</div>
+          <div class="s">홈페이지에서 바로 신청</div>
+        </div>
+      </div>
+      <p class="since" style="font-family:var(--bodyKR);font-size:1.9vh;letter-spacing:0;text-transform:none;color:rgba(230,236,227,.5)">
+        읽기 이해도·어휘·짧은 쓰기까지 확인하고, 결과지를 함께 보며 설명드립니다.
+      </p>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">인천 연수구 컨벤시아대로130번길 18 · 해온프라자 7층</div></div>
+  </section>
+
+</div>
+
+<div class="help" id="help">스페이스 = 멈춤 / 재생 · ← → = 이전·다음 · F = 전체화면</div>
+
+<script>
+(function(){
+  var stage  = document.getElementById('stage');
+  var help   = document.getElementById('help');
+  var slides = Array.prototype.slice.call(stage.querySelectorAll('.slide'));
+  var DUR    = 14000;
+  var i = 0, timer = null, paused = false;
+
+  // 책 한 쌍 슬라이드를 data- 속성으로부터 만듭니다
+  slides.forEach(function(s){
+    if (!s.hasAttribute('data-pair')) return;
+    var d = s.dataset;
+    s.innerHTML =
+      '<div class="head">' +
+        '<div class="mark">SR Academy <span>수리딩어학원</span></div>' +
+        '<div class="stage-tag">' + d.stage + '</div>' +
+      '</div>' +
+      '<div class="pair drift">' +
+        '<div class="side ko">' +
+          '<div class="side-label">한국어판</div>' +
+          '<div class="book"><div class="t">' + d.koT + '</div>' +
+            '<div class="rule"></div><div class="a">' + d.koA + '</div></div>' +
+          '<div class="cap"><div class="k">' + d.koK + '</div></div>' +
+        '</div>' +
+        '<div class="link">' +
+          '<div class="t">아이는 이 책을</div>' +
+          '<div class="arrow"></div>' +
+          '<div class="t">원서로 읽습니다</div>' +
+        '</div>' +
+        '<div class="side en">' +
+          '<div class="side-label">Original</div>' +
+          '<div class="book"><div class="t">' + d.enT + '</div>' +
+            '<div class="rule"></div><div class="a">' + d.enA + '</div></div>' +
+          '<div class="cap"><div class="k">' + d.enK + '</div>' +
+            '<div class="sub">' + d.enA + '</div></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="note"><p>' + d.note + '</p></div>' +
+      '<div class="foot"><div class="dots"></div>' +
+        '<div class="site">suereadingclub.co.kr</div></div>';
+  });
+
+  // 진행 표시 점
+  slides.forEach(function(s){
+    var box = s.querySelector('.dots');
+    if (!box) return;
+    slides.forEach(function(){
+      var d = document.createElement('i');
+      d.className = 'dot';
+      box.appendChild(d);
+    });
+  });
+
+  function paint(){
+    slides.forEach(function(s, n){
+      s.classList.toggle('on', n === i);
+      var dots = s.querySelectorAll('.dot');
+      for (var k = 0; k < dots.length; k++) dots[k].classList.toggle('now', k === i);
+    });
+  }
+
+  function go(n){
+    i = (n + slides.length) % slides.length;
+    paint();
+    restart();
+  }
+  function next(){ go(i + 1); }
+  function prev(){ go(i - 1); }
+
+  function restart(){
+    clearTimeout(timer);
+    if (!paused) timer = setTimeout(next, DUR);
+  }
+
+  function toggle(){
+    paused = !paused;
+    document.body.classList.toggle('paused', paused);
+    help.textContent = paused
+      ? '멈춤 — 스페이스를 누르면 다시 재생됩니다'
+      : '스페이스 = 멈춤 / 재생 · ← → = 이전·다음 · F = 전체화면';
+    restart();
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === ' ')          { e.preventDefault(); toggle(); }
+    if (e.key === 'ArrowRight') { next(); }
+    if (e.key === 'ArrowLeft')  { prev(); }
+    if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    }
+  });
+
+  // 화면을 누르면 다음 장 (터치 TV·태블릿용)
+  document.addEventListener('click', next);
+
+  // 마우스를 움직이면 조작 안내를 잠깐 보여줍니다
+  var hideHelp;
+  document.addEventListener('mousemove', function(){
+    if (paused) return;
+    help.classList.add('show');
+    clearTimeout(hideHelp);
+    hideHelp = setTimeout(function(){ help.classList.remove('show'); }, 2600);
+  });
+
+  // 탭이 가려지면 멈췄다가 돌아오면 이어서 재생
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) clearTimeout(timer);
+    else restart();
+  });
+
+  paint();
+  restart();
+})();
+</script>
+</body>
+</html>
