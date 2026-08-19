@@ -36,7 +36,9 @@
 }
 </script><style>
 /* ── 레벨 테스트 신청 폼: 추가 요소 ── */
-.applyform .af-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.applyform .af-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;width:100%}
+.applyform .af-grid3 .af-row{min-width:0}
+.applyform .af-grid3 input,.applyform .af-grid3 select{width:100%;box-sizing:border-box}
 .applyform .af-note{color:var(--moss);margin:-4px 0 18px}
 .applyform label em{font-style:normal;font-weight:400;color:var(--moss);font-size:.9em}
 .applyform input[type=date]{width:100%;padding:12px 13px;border:1px solid rgba(14,59,44,.16);
