@@ -152,134 +152,61 @@ document.querySelectorAll('[data-year]').forEach(function (el) {
   const form = document.getElementById('applyForm');
   if (!form) return;
 
-  // ▼▼▼ Apps Script 웹앱 주소 (재배포로 주소가 바뀌면 여기만 고치면 됩니다) ▼▼▼
-  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbx7j-laaG375ha--NBLuYF4lSXSYVpPefsHRWXMBbPt72q_2Yf17xgv0Sh81NwPccXcvg/exec';
+  // ▼▼▼ Apps Script 웹앱 주소를 여기에 넣으세요 ▼▼▼
+  const ENDPOINT = 'APPS_SCRIPT_URL';
 
-  const $ = function (id) { return document.getElementById(id); };
-  const btn = $('afSubmit');
-  const msg = $('afMsg');
+  const btn = document.getElementById('afSubmit');
+  const msg = document.getElementById('afMsg');
 
   function show(text, kind) {
     msg.textContent = text;
     msg.className = 'af-msg show ' + kind;
   }
 
-  function fail(el, text) {
-    if (el) { el.setAttribute('aria-invalid', 'true'); el.focus(); }
-    show(text, 'err');
-    return false;
-  }
+  // 전화번호 자동 하이픈
+  const phone = document.getElementById('afPhone');
+  phone.addEventListener('input', function () {
+    let v = phone.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 7)      v = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7);
+    else if (v.length > 3) v = v.slice(0,3) + '-' + v.slice(3);
+    phone.value = v;
+  });
 
-  // --- 전화번호 자동 하이픈 (학생·학부모 두 칸 모두) ---
-  const phone = $('afPhone');
-  const sPhone = $('afStudentPhone');
-
-  function hyphenate(el) {
-    if (!el) return;
-    el.addEventListener('input', function () {
-      let v = el.value.replace(/\D/g, '').slice(0, 11);
-      if (v.length > 7)      v = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7);
-      else if (v.length > 3) v = v.slice(0, 3) + '-' + v.slice(3);
-      el.value = v;
-    });
-  }
-  hyphenate(phone);
-  hyphenate(sPhone);
-
-  // --- 요일에 따라 시간 선택지 변경 ---
-  const day  = $('afDay');
-  const time = $('afTime');
-  const SLOTS = {
-    '월요일': ['오후 6시', '오후 7시', '오후 8시'],
-    '수요일': ['오후 6시', '오후 7시', '오후 8시'],
-    '금요일': ['오후 6시', '오후 7시', '오후 8시'],
-    '화요일': ['오후 2시', '오후 3시', '오후 4시'],
-    '목요일': ['오후 2시', '오후 3시', '오후 4시']
-  };
-
-  if (day && time) {
-    day.addEventListener('change', function () {
-      const list = SLOTS[day.value];
-      time.innerHTML = '';
-      if (!list) {
-        time.appendChild(new Option('요일을 먼저 선택하세요', ''));
-        return;
-      }
-      time.appendChild(new Option('시간 선택', ''));
-      list.forEach(function (t) { time.appendChild(new Option(t, t)); });
-    });
-  }
-
-  // --- 희망 날짜: 오늘 이전 선택 방지 ---
-  const dateEl = $('afDate');
-  if (dateEl) {
-    const today = new Date();
-    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-    dateEl.min = today.toISOString().slice(0, 10);
-  }
-
-  // --- 제출 ---
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const name   = $('afName');
-    const gender = $('afGender');
-    const school = $('afSchool');
-    const grade  = $('afGrade');
-    const level  = $('afLevel');
-    const memo   = $('afMemo');
-    const agree  = $('afAgree');
-    const pay    = form.querySelector('input[name="afPay"]:checked');
+    const name  = document.getElementById('afName');
+    const grade = document.getElementById('afGrade');
+    const agree = document.getElementById('afAgree');
 
-    [name, gender, school, grade, phone, dateEl, day, time].forEach(function (el) {
-      if (el) el.removeAttribute('aria-invalid');
-    });
+    [name, grade, phone].forEach(function (el) { el.removeAttribute('aria-invalid'); });
 
-    if (!name.value.trim())   return fail(name,   '학생 이름을 입력해 주세요.');
-    if (!gender.value)        return fail(gender, '성별을 선택해 주세요.');
-    if (phone.value.replace(/\D/g, '').length < 10)
-                              return fail(phone,  '학부모 연락처를 정확히 입력해 주세요.');
-    if (!school.value.trim()) return fail(school, '학교명을 입력해 주세요.');
-    if (!grade.value)         return fail(grade,  '학년을 선택해 주세요.');
-    if (!dateEl.value)        return fail(dateEl, '희망 날짜를 선택해 주세요.');
-    if (!day.value)           return fail(day,    '희망 요일을 선택해 주세요.');
-    if (!time.value)          return fail(time,   '희망 시간을 선택해 주세요.');
-    if (!pay)                 return fail(null,   '결제 방법을 선택해 주세요.');
-    if (!agree.checked)       return fail(null,   '개인정보 수집·이용에 동의해 주세요.');
-
-    const programs = Array.prototype.map.call(
-      form.querySelectorAll('input[name="programs"]:checked'),
-      function (c) { return c.value; }
-    ).join(', ');
+    if (!name.value.trim())  { name.setAttribute('aria-invalid','true');  name.focus();  return show('학생 이름을 입력해 주세요.', 'err'); }
+    if (!grade.value)        { grade.setAttribute('aria-invalid','true'); grade.focus(); return show('학년을 선택해 주세요.', 'err'); }
+    if (phone.value.replace(/\D/g,'').length < 10) {
+      phone.setAttribute('aria-invalid','true'); phone.focus();
+      return show('연락처를 정확히 입력해 주세요.', 'err');
+    }
+    if (!agree.checked) { return show('개인정보 수집·이용에 동의해 주세요.', 'err'); }
 
     btn.disabled = true;
     btn.textContent = '신청 중...';
     show('신청을 접수하는 중입니다...', 'ok');
 
     const params = new URLSearchParams({
-      action:        'srLevelTest',
+      action: 'srLevelTest',
       studentName:   name.value.trim(),
-      gender:        gender.value,
-      studentPhone:  sPhone ? sPhone.value.trim() : '',
-      parentPhone:   phone.value.trim(),
-      school:        school.value.trim(),
       grade:         grade.value,
-      preferredDate: dateEl.value,
-      consultDay:    day.value,
-      consultTime:   time.value,
-      // 기존 Apps Script 호환용 — 날짜·요일·시간을 한 줄로
-      preferredTime: dateEl.value + ' (' + day.value + ') ' + time.value,
-      programs:      programs,
-      englishLevel:  level ? level.value : '',
-      paymentMethod: pay.value,
-      memo:          memo ? memo.value.trim() : ''
+      school:        document.getElementById('afSchool').value.trim(),
+      parentPhone:   phone.value.trim(),
+      preferredTime: document.getElementById('afTime').value,
+      memo:          document.getElementById('afMemo').value.trim()
     });
 
     try {
       if (ENDPOINT === 'APPS_SCRIPT_URL') throw new Error('endpoint not set');
       await fetch(ENDPOINT + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
       form.reset();
-      if (time) time.innerHTML = '<option value="">요일을 먼저 선택하세요</option>';
       show('신청이 접수되었습니다. 1~2일 내에 연락드리겠습니다. 감사합니다.', 'ok');
       btn.textContent = '신청 완료';
     } catch (err) {
