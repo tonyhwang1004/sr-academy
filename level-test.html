@@ -89,7 +89,73 @@
     ]
   }
 }
-</script></head>
+</script><style>
+/* ---- 레벨테스트 신청 폼 (확장판) ---- */
+.applyform.af-wrap{background:var(--card,#FBFAF7);border:1px solid rgba(14,59,44,.10);
+  border-radius:18px;padding:34px 32px;box-shadow:0 8px 30px rgba(14,59,44,.07)}
+.applyform .af-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.applyform .af-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;width:100%}
+.applyform .af-grid3 .af-row{min-width:0}
+.applyform .af-grid3 input,.applyform .af-grid3 select{width:100%;box-sizing:border-box}
+.applyform .af-row{margin-bottom:18px}
+.applyform .af-label{display:block;font-size:13.5px;font-weight:700;
+  color:var(--bottle,#0E3B2C);margin-bottom:7px;letter-spacing:.01em}
+.applyform .af-req{color:#C0392B;margin-left:2px}
+.applyform input[type=text],.applyform input[type=tel],.applyform input[type=date],
+.applyform select,.applyform textarea{
+  width:100%;box-sizing:border-box;padding:13px 14px;
+  border:1px solid rgba(14,59,44,.16);border-radius:9px;
+  font-size:15px;font-family:inherit;background:#fff;color:#16261F;
+  transition:border-color .2s,box-shadow .2s}
+.applyform input:focus,.applyform select:focus,.applyform textarea:focus{
+  outline:none;border-color:var(--bottle,#0E3B2C);box-shadow:0 0 0 3px rgba(14,59,44,.10)}
+.applyform input[aria-invalid=true],.applyform select[aria-invalid=true]{
+  border-color:#C0392B;box-shadow:0 0 0 3px rgba(192,57,43,.10)}
+.applyform textarea{min-height:110px;resize:vertical}
+.applyform .af-hint{font-size:12.5px;color:var(--moss,#6F8F7A);margin-top:6px;line-height:1.55}
+
+.applyform .af-checks{display:flex;flex-wrap:wrap;gap:9px}
+.applyform .af-chip{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;
+  background:var(--sage,#E6ECE3);border:1px solid transparent;border-radius:100px;
+  font-size:14px;color:#16261F;cursor:pointer;transition:all .18s}
+.applyform .af-chip:hover{border-color:rgba(14,59,44,.25)}
+.applyform .af-chip input{width:15px;height:15px;accent-color:var(--bottle,#0E3B2C);
+  cursor:pointer;margin:0}
+.applyform .af-chip:has(input:checked){background:var(--bottle,#0E3B2C);color:#fff}
+
+.applyform .af-fee{display:flex;align-items:baseline;gap:10px;padding:15px 18px;
+  background:var(--sage,#E6ECE3);border-radius:10px;margin-bottom:18px}
+.applyform .af-fee b{font-size:20px;color:var(--bottle,#0E3B2C);letter-spacing:-.01em}
+.applyform .af-fee span{font-size:13.5px;color:var(--moss,#6F8F7A)}
+.applyform .af-bank{font-size:13px;color:#16261F;line-height:1.65;margin-top:11px;
+  padding:13px 16px;background:#fff;border-left:3px solid var(--marigold,#C88A1A);
+  border-radius:0 8px 8px 0}
+
+.applyform .af-agree{display:flex;gap:10px;align-items:flex-start;margin:22px 0 4px;
+  font-size:13.5px;color:var(--moss,#6F8F7A);line-height:1.65;cursor:pointer}
+.applyform .af-agree input{width:17px;height:17px;flex-shrink:0;margin-top:2px;
+  accent-color:var(--bottle,#0E3B2C);cursor:pointer}
+
+.applyform #afSubmit{width:100%;margin-top:20px;padding:17px;border:none;border-radius:10px;
+  background:var(--bottle,#0E3B2C);color:#fff;font-size:16px;font-weight:700;
+  font-family:inherit;cursor:pointer;transition:all .2s;letter-spacing:.01em}
+.applyform #afSubmit:hover:not(:disabled){background:#0A2D22;transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(14,59,44,.24)}
+.applyform #afSubmit:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+.applyform .af-msg{display:none;margin-top:15px;padding:13px 16px;border-radius:9px;
+  font-size:14px;line-height:1.6}
+.applyform .af-msg.show{display:block}
+.applyform .af-msg.ok{background:var(--sage,#E6ECE3);color:var(--bottle,#0E3B2C)}
+.applyform .af-msg.err{background:#FBEAE8;color:#A93226}
+.applyform .af-alt{margin-top:14px;text-align:center}
+
+@media (max-width:720px){
+  .applyform.af-wrap{padding:26px 20px}
+  .applyform .af-grid,.applyform .af-grid3{grid-template-columns:1fr;gap:0}
+}
+</style>
+</head>
 <body>
 
 <a class="skip" href="#main">본문으로 건너뛰기</a>
@@ -254,45 +320,138 @@
     </div>
 
     <div>
-      <form class="applyform" id="applyForm" novalidate>
-        <div class="af-row">
-          <label for="afName">학생 이름 <span>*</span></label>
-          <input type="text" id="afName" name="studentName" required placeholder="홍길동">
-        </div>
+      <form class="applyform af-wrap" id="applyForm" novalidate>
+
+        <!-- 학생 이름 / 성별 -->
         <div class="af-grid">
           <div class="af-row">
-            <label for="afGrade">학년 <span>*</span></label>
-            <select id="afGrade" name="grade" required>
-              <option value="">선택</option>
-              <option>초1</option><option>초2</option><option>초3</option>
-              <option>초4</option><option>초5</option><option>초6</option>
-              <option>중1</option><option>중2</option><option>중3</option>
-              <option>기타</option>
+            <label class="af-label" for="afName">학생 이름 <span class="af-req">*</span></label>
+            <input type="text" id="afName" name="studentName" placeholder="학생 이름" autocomplete="name">
+          </div>
+          <div class="af-row">
+            <label class="af-label" for="afGender">성별 <span class="af-req">*</span></label>
+            <select id="afGender" name="gender">
+              <option value="">선택해 주세요</option>
+              <option value="남학생">남학생</option>
+              <option value="여학생">여학생</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 연락처 -->
+        <div class="af-grid">
+          <div class="af-row">
+            <label class="af-label" for="afStudentPhone">학생 연락처</label>
+            <input type="tel" id="afStudentPhone" name="studentPhone" placeholder="010-0000-0000" inputmode="numeric">
+            <p class="af-hint">없으면 비워두셔도 됩니다.</p>
+          </div>
+          <div class="af-row">
+            <label class="af-label" for="afPhone">학부모 연락처 <span class="af-req">*</span></label>
+            <input type="tel" id="afPhone" name="parentPhone" placeholder="010-0000-0000" inputmode="numeric">
+          </div>
+        </div>
+
+        <!-- 학교 / 학년 -->
+        <div class="af-grid">
+          <div class="af-row">
+            <label class="af-label" for="afSchool">학교 <span class="af-req">*</span></label>
+            <input type="text" id="afSchool" name="school" placeholder="현재 재학 중인 학교명">
+          </div>
+          <div class="af-row">
+            <label class="af-label" for="afGrade">학년 <span class="af-req">*</span></label>
+            <select id="afGrade" name="grade">
+              <option value="">선택해 주세요</option>
+              <option value="유아 5세">유아 5세</option>
+              <option value="유아 6세">유아 6세</option>
+              <option value="유아 7세">유아 7세</option>
+              <option value="초1">초1</option>
+              <option value="초2">초2</option>
+              <option value="초3">초3</option>
+              <option value="초4">초4</option>
+              <option value="초5">초5</option>
+              <option value="초6">초6</option>
+              <option value="중1">중1</option>
+              <option value="중2">중2</option>
+              <option value="중3">중3</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 희망 날짜 / 요일 / 시간 -->
+        <div class="af-grid3">
+          <div class="af-row">
+            <label class="af-label" for="afDate">희망 날짜 <span class="af-req">*</span></label>
+            <input type="date" id="afDate" name="preferredDate">
+          </div>
+          <div class="af-row">
+            <label class="af-label" for="afDay">희망 요일 <span class="af-req">*</span></label>
+            <select id="afDay" name="consultDay">
+              <option value="">요일 선택</option>
+              <option value="월요일">월요일</option>
+              <option value="화요일">화요일</option>
+              <option value="수요일">수요일</option>
+              <option value="목요일">목요일</option>
+              <option value="금요일">금요일</option>
             </select>
           </div>
           <div class="af-row">
-            <label for="afSchool">학교</label>
-            <input type="text" id="afSchool" name="school" placeholder="○○초등학교">
+            <label class="af-label" for="afTime">희망 시간 <span class="af-req">*</span></label>
+            <select id="afTime" name="consultTime">
+              <option value="">요일을 먼저 선택하세요</option>
+            </select>
           </div>
         </div>
+        <p class="af-hint" style="margin:-6px 0 20px">
+          월·수·금 오후 6시·7시·8시 &nbsp;/&nbsp; 화·목 오후 2시·3시·4시
+        </p>
+
+        <!-- 관심 프로그램 -->
         <div class="af-row">
-          <label for="afPhone">학부모 연락처 <span>*</span></label>
-          <input type="tel" id="afPhone" name="parentPhone" required placeholder="010-0000-0000" inputmode="numeric">
+          <label class="af-label">관심 프로그램 <span style="font-weight:500;color:var(--moss,#6F8F7A)">(복수 선택 가능)</span></label>
+          <div class="af-checks">
+            <label class="af-chip"><input type="checkbox" name="programs" value="영어 소설 읽기"><span>영어 소설 읽기</span></label>
+            <label class="af-chip"><input type="checkbox" name="programs" value="디베이트"><span>디베이트</span></label>
+            <label class="af-chip"><input type="checkbox" name="programs" value="에세이 작성"><span>에세이 작성</span></label>
+            <label class="af-chip"><input type="checkbox" name="programs" value="국제학교 입학대비"><span>국제학교 입학대비</span></label>
+            <label class="af-chip"><input type="checkbox" name="programs" value="특목자사고 대비"><span>특목자사고 대비</span></label>
+            <label class="af-chip"><input type="checkbox" name="programs" value="내신반"><span>내신반</span></label>
+          </div>
         </div>
+
+        <!-- 현재 영어 수준 -->
         <div class="af-row">
-          <label for="afTime">희망 시간대</label>
-          <select id="afTime" name="preferredTime">
-            <option value="">상관없음</option>
-            <option>평일 오후 2~4시</option>
-            <option>평일 오후 4~6시</option>
-            <option>평일 오후 6~8시</option>
-            <option>토요일 오전</option>
-            <option>토요일 오후</option>
+          <label class="af-label" for="afLevel">현재 영어 수준</label>
+          <select id="afLevel" name="englishLevel">
+            <option value="">선택해 주세요</option>
+            <option value="입문">입문 — 알파벳·파닉스 단계</option>
+            <option value="기초">기초 — 간단한 문장 읽기 가능</option>
+            <option value="중급">중급 — 짧은 지문 독해 가능</option>
+            <option value="고급">고급 — 원서 읽기 가능</option>
           </select>
         </div>
+
+        <!-- 문의사항 -->
         <div class="af-row">
-          <label for="afMemo">문의 사항</label>
+          <label class="af-label" for="afMemo">문의 사항</label>
           <textarea id="afMemo" name="memo" rows="3" placeholder="현재 영어 학습 상황이나 궁금하신 점을 적어주세요."></textarea>
+        </div>
+
+        <!-- 비용 / 결제 -->
+        <div class="af-row">
+          <div class="af-fee">
+            <span>레벨 테스트 비용</span>
+            <b>20,000원</b>
+          </div>
+          <label class="af-label">결제 방법 <span class="af-req">*</span></label>
+          <div class="af-checks">
+            <label class="af-chip"><input type="radio" name="afPay" value="계좌이체"><span>계좌이체</span></label>
+            <label class="af-chip"><input type="radio" name="afPay" value="온라인 카드결제"><span>온라인 카드결제</span></label>
+          </div>
+          <p class="af-bank">
+            <strong>계좌이체 안내</strong><br>
+            국민은행 469901-04-155186 · 예금주 수리딩교육
+          </p>
         </div>
 
         <label class="af-agree">
