@@ -304,6 +304,95 @@ body{
   .slide{transition:none}
   .slide.on .drift{animation:none}
 }
+
+/* ── 추가 슬라이드 공통 ───────────────────────────── */
+.board{flex:1;display:flex;flex-direction:column;justify-content:center;gap:4.6vh}
+.board h2{
+  font-family:var(--displayKR);
+  font-size:5vh;font-weight:700;text-align:center;letter-spacing:-.02em;
+  word-break:keep-all;
+}
+.board h2 em{font-style:normal;color:var(--marigold)}
+.board .sub{
+  text-align:center;font-family:var(--bodyKR);
+  font-size:2.2vh;line-height:1.7;color:rgba(230,236,227,.6);
+  word-break:keep-all;max-width:60vw;margin:0 auto;
+}
+
+/* 세 갈래 카드 */
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2vw}
+.tri .c{
+  border:1px solid rgba(230,236,227,.2);
+  border-top:.5vh solid var(--marigold);
+  border-radius:1.2vh;padding:3.6vh 2.8vh;
+  display:flex;flex-direction:column;gap:1.5vh;
+}
+.tri .n{
+  font-family:var(--body);font-size:1.5vh;font-weight:700;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--marigold);
+}
+.tri .t{font-family:var(--displayKR);font-size:3.6vh;font-weight:700}
+.tri .d{
+  font-family:var(--bodyKR);font-size:2.05vh;line-height:1.72;
+  color:rgba(230,236,227,.72);word-break:keep-all;
+}
+
+/* 숫자 넉 장 */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2vw}
+.stat{text-align:center;padding:0 1vw}
+.stat .n{
+  font-family:var(--display);font-size:8.6vh;font-weight:600;
+  line-height:1;color:var(--marigold);letter-spacing:-.02em;
+}
+.stat .l{
+  font-family:var(--bodyKR);font-size:2vh;margin-top:1.4vh;
+  color:rgba(230,236,227,.62);word-break:keep-all;
+}
+
+/* 큰 문장 한 장 */
+.stmt{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:3.2vh}
+.stmt .h{
+  font-family:var(--displayKR);font-size:6vh;font-weight:700;
+  line-height:1.32;letter-spacing:-.022em;word-break:keep-all;max-width:66vw;
+}
+.stmt .h em{font-style:normal;color:var(--marigold)}
+.stmt .p{
+  font-family:var(--bodyKR);font-size:2.4vh;line-height:1.8;
+  color:rgba(230,236,227,.68);max-width:56vw;word-break:keep-all;
+}
+.stmt .tagn{
+  font-family:var(--display);font-size:2.2vh;font-weight:700;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(230,236,227,.4);
+  border-top:1px solid rgba(230,236,227,.2);padding-top:2.2vh;
+}
+
+/* 후기 */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2vw}
+.q{
+  border:1px solid rgba(230,236,227,.18);border-radius:1.2vh;
+  padding:3.4vh 2.6vh;display:flex;flex-direction:column;gap:2vh;
+}
+.q .mk{font-family:var(--display);font-size:5vh;color:var(--marigold);line-height:.6;opacity:.75}
+.q .txt{
+  font-family:var(--displayKR);font-size:2.35vh;font-weight:500;line-height:1.66;
+  word-break:keep-all;color:rgba(230,236,227,.9);
+}
+.q .who{
+  margin-top:auto;border-top:1px solid rgba(230,236,227,.16);padding-top:1.8vh;
+  font-family:var(--bodyKR);font-size:1.85vh;color:rgba(230,236,227,.56);
+}
+.q .who b{display:block;font-weight:700;font-size:2.1vh;color:var(--card);margin-bottom:.4vh}
+
+/* 진학 결과 */
+.chips{display:flex;flex-wrap:wrap;gap:1.2vw 1vw;justify-content:center;max-width:76vw;margin:0 auto}
+.chip{
+  border:1px solid rgba(230,236,227,.24);border-radius:100px;
+  padding:1.5vh 2.8vh;
+  font-family:var(--displayKR);font-size:2.6vh;font-weight:600;
+}
+.chip.gold{border-color:rgba(200,138,26,.6);color:var(--marigold)}
+
 </style>
 </head>
 <body>
@@ -320,6 +409,70 @@ body{
       <div class="big">Born to <i>Read.</i></div>
       <p class="lead">부모님이 한국어로 읽으신 그 책을,<br>아이는 원서로 읽습니다.</p>
       <div class="since">Sue Reading Club · Songdo</div>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
+  </section>
+
+
+  <!-- 세 갈래 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">Why SR?</div>
+    </div>
+    <div class="board drift">
+      <h2>세 갈래가 <em>한 방향</em>으로 갑니다.</h2>
+      <p class="sub">Novel · Writing · Debate. 같은 주에 서로를 받쳐 주며, 초등에서 중등까지 끊기지 않고 이어집니다.</p>
+      <div class="tri">
+        <div class="c">
+          <div class="n">01 — Novel</div>
+          <div class="t">원서 정독</div>
+          <div class="d">발췌문이 아니라 한 권을 끝까지 읽습니다. 인물과 사건이 쌓이면서 문맥으로 어휘를 익힙니다.</div>
+        </div>
+        <div class="c">
+          <div class="n">02 — Writing</div>
+          <div class="t">문장에서 에세이로</div>
+          <div class="d">배운 문법과 어휘를 문장 쓰기에 적용합니다. 쓴 글은 문법 교정과 논리 코멘트를 나눠 돌려드립니다.</div>
+        </div>
+        <div class="c">
+          <div class="n">03 — Debate</div>
+          <div class="t">근거를 찾는 토론</div>
+          <div class="d">“왜 그렇게 생각했어?”에 본문 쪽수로 답하게 합니다. 인상이 아니라 텍스트로 말하는 연습입니다.</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
+  </section>
+
+  <!-- 숫자 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">Since 2004</div>
+    </div>
+    <div class="board drift">
+      <h2>숫자로 보는 <em>수리딩</em></h2>
+      <div class="stats">
+        <div class="stat"><div class="n">2004</div><div class="l">개원 이후 지금까지</div></div>
+        <div class="stat"><div class="n">6년</div><div class="l">졸업생 평균 재원 기간</div></div>
+        <div class="stat"><div class="n">9단계</div><div class="l">Phonics부터 중등까지</div></div>
+        <div class="stat"><div class="n">4영역</div><div class="l">리딩 · 어휘 · 라이팅 · 문법</div></div>
+      </div>
+      <p class="sub">유행하는 교수법을 좇지 않았습니다. 원서를 끝까지 읽히고, 읽은 것을 말하게 하고,<br>글로 남기게 하는 일. 그 하나를 20년 넘게 다듬었습니다.</p>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
+  </section>
+
+  <!-- 인사말 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">Greetings</div>
+    </div>
+    <div class="stmt drift">
+      <p class="h">단어를 아는 것과<br>문장을 이해하는 것은 <em>다릅니다.</em></p>
+      <p class="p">아이가 책을 덮은 뒤에도 생각이 이어지도록 가르칩니다. 리딩에서 익힌 것이 어휘로, 다시 쓰기와 문법으로 이어지도록 모든 수업이 서로를 받쳐 주게 설계했습니다.</p>
+      <div class="tagn">Reading at the center</div>
     </div>
     <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
   </section>
@@ -399,6 +552,75 @@ body{
         <div class="step top" style="height:100%"><div class="n">중등</div><div class="g">중학생</div></div>
       </div>
       <p class="foot-note">레벨은 고정이 아닙니다. 학기 중에도 아이의 속도에 따라 반을 조정합니다.</p>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
+  </section>
+
+
+  <!-- 커리큘럼 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">Curriculum</div>
+    </div>
+    <div class="stmt drift">
+      <p class="h">발췌문이 아니라 <em>한 권</em>을 읽습니다.</p>
+      <p class="p">Magic Tree House에서 시작해 The Giver와 Sapiens까지. 아홉 단계에 걸쳐 읽고,<br>챕터마다 온라인 이해도 테스트로 확인합니다. <em style="font-style:normal;color:var(--marigold)">80점을 넘어야 다음으로 갑니다.</em></p>
+      <div class="stats" style="width:56vw;grid-template-columns:repeat(2,1fr);margin-top:1vh">
+        <div class="stat"><div class="n">57종</div><div class="l">온라인 테스트가 준비된 원서</div></div>
+        <div class="stat"><div class="n">80점</div><div class="l">다음 단계로 넘어가는 기준</div></div>
+      </div>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
+  </section>
+
+  <!-- 후기 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">Reviews</div>
+    </div>
+    <div class="board drift">
+      <h2>짧게 다니고 떠난 학생은 없습니다. <em>평균 6년.</em></h2>
+      <div class="quotes">
+        <div class="q">
+          <div class="mk">“</div>
+          <div class="txt">획일화된 교육이 아닌 다양한 영문 소설과 디베이트 수업을 통해 학생들의 영어 독해 능력과 사고력을 향상시킵니다.</div>
+          <div class="who"><b>한정빈</b>서울대학교 국어국문학과 · 중1~고입 전 3년 재원</div>
+        </div>
+        <div class="q">
+          <div class="mk">“</div>
+          <div class="txt">소설 읽기와 디베이트 수업을 통해 영어 실력과 논리적 사고, 표현 능력을 체계적으로 향상시킵니다.</div>
+          <div class="who"><b>이석민</b>한양대학교 의예과 · 초1~고입 전 9년 재원</div>
+        </div>
+        <div class="q">
+          <div class="mk">“</div>
+          <div class="txt">차별화된 교육철학과 열정으로 아이들의 시야를 넓히고, 영어 실력과 토론 능력을 키워주는 곳입니다.</div>
+          <div class="who"><b>졸업생 학부모</b>세 자녀 10년 이상 재원</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
+  </section>
+
+  <!-- 진학 결과 -->
+  <section class="slide">
+    <div class="head">
+      <div class="mark">SR Academy <span>수리딩어학원</span></div>
+      <div class="stage-tag">Results</div>
+    </div>
+    <div class="board drift">
+      <h2>읽는 힘이 <em>결과</em>로 남았습니다.</h2>
+      <div class="chips">
+        <div class="chip gold">서울대학교 국어국문학과</div>
+        <div class="chip gold">한양대학교 의예과</div>
+        <div class="chip">조지메이슨대학교</div>
+        <div class="chip">중앙대학교 경제학부</div>
+        <div class="chip">서울과학기술대학교</div>
+        <div class="chip">미추홀외국어고등학교</div>
+        <div class="chip">인천과학고등학교</div>
+      </div>
+      <p class="sub">모두 SR Academy를 거쳐 간 학생들입니다.</p>
     </div>
     <div class="foot"><div class="dots"></div><div class="site">suereadingclub.co.kr</div></div>
   </section>
