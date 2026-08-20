@@ -89,7 +89,32 @@
     ]
   }
 }
-</script></head>
+</script><style>
+/* ---- 레벨 테스트 신청 유도 카드 ---- */
+.cta-card{background:var(--card,#FBFAF7);border:1px solid rgba(14,59,44,.10);
+  border-radius:18px;padding:38px 34px;box-shadow:0 8px 30px rgba(14,59,44,.07)}
+.cta-card-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--marigold,#C88A1A);margin:0 0 12px}
+.cta-card-title{font-family:var(--display,'Fraunces',serif);font-size:27px;
+  line-height:1.32;color:var(--bottle,#0E3B2C);margin:0 0 26px;letter-spacing:-.01em}
+.cta-card-list{list-style:none;padding:0;margin:0 0 30px}
+.cta-card-list li{position:relative;padding:13px 0 13px 2px;font-size:14.5px;
+  color:#16261F;line-height:1.6;border-bottom:1px solid rgba(14,59,44,.09)}
+.cta-card-list li:last-child{border-bottom:none}
+.cta-card-list li span{display:inline-block;min-width:74px;font-weight:700;
+  color:var(--bottle,#0E3B2C);font-size:13.5px}
+.cta-card-btn{display:block;width:100%;box-sizing:border-box;text-align:center;
+  padding:17px;border-radius:10px;font-size:16px;font-weight:700;
+  text-decoration:none;transition:all .2s;letter-spacing:.01em}
+.cta-card-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(14,59,44,.24)}
+.cta-card-alt{font-size:13px;color:var(--moss,#6F8F7A);text-align:center;
+  margin:16px 0 0;line-height:1.6}
+@media (max-width:720px){
+  .cta-card{padding:28px 22px}
+  .cta-card-title{font-size:23px}
+}
+</style>
+</head>
 <body>
 
 <a class="skip" href="#main">본문으로 건너뛰기</a>
@@ -254,56 +279,22 @@
     </div>
 
     <div>
-      <form class="applyform" id="applyForm" novalidate>
-        <div class="af-row">
-          <label for="afName">학생 이름 <span>*</span></label>
-          <input type="text" id="afName" name="studentName" required placeholder="홍길동">
-        </div>
-        <div class="af-grid">
-          <div class="af-row">
-            <label for="afGrade">학년 <span>*</span></label>
-            <select id="afGrade" name="grade" required>
-              <option value="">선택</option>
-              <option>초1</option><option>초2</option><option>초3</option>
-              <option>초4</option><option>초5</option><option>초6</option>
-              <option>중1</option><option>중2</option><option>중3</option>
-              <option>기타</option>
-            </select>
-          </div>
-          <div class="af-row">
-            <label for="afSchool">학교</label>
-            <input type="text" id="afSchool" name="school" placeholder="○○초등학교">
-          </div>
-        </div>
-        <div class="af-row">
-          <label for="afPhone">학부모 연락처 <span>*</span></label>
-          <input type="tel" id="afPhone" name="parentPhone" required placeholder="010-0000-0000" inputmode="numeric">
-        </div>
-        <div class="af-row">
-          <label for="afTime">희망 시간대</label>
-          <select id="afTime" name="preferredTime">
-            <option value="">상관없음</option>
-            <option>평일 오후 2~4시</option>
-            <option>평일 오후 4~6시</option>
-            <option>평일 오후 6~8시</option>
-            <option>토요일 오전</option>
-            <option>토요일 오후</option>
-          </select>
-        </div>
-        <div class="af-row">
-          <label for="afMemo">문의 사항</label>
-          <textarea id="afMemo" name="memo" rows="3" placeholder="현재 영어 학습 상황이나 궁금하신 점을 적어주세요."></textarea>
-        </div>
+      <div class="cta-card">
+        <p class="cta-card-eyebrow">Level Test</p>
+        <h3 class="cta-card-title">레벨 테스트로<br>시작 지점을 정합니다</h3>
 
-        <label class="af-agree">
-          <input type="checkbox" id="afAgree" required>
-          <span>상담을 위한 개인정보 수집·이용에 동의합니다. 수집한 정보는 레벨 테스트 안내 목적으로만 사용하며, 상담 종료 후 파기합니다.</span>
-        </label>
+        <ul class="cta-card-list">
+          <li><span>60분</span> 읽기 이해도 · 어휘 · 짧은 쓰기</li>
+          <li><span>결과지</span> 상담 때 함께 보며 설명</li>
+          <li><span>반 배정</span> 학년이 아닌 실제 읽기 수준으로</li>
+        </ul>
 
-        <button type="submit" class="btn btn-dark af-submit" id="afSubmit">레벨 테스트 신청하기</button>
-        <p class="af-msg" id="afMsg" role="status" aria-live="polite"></p>
-        <p class="small af-alt">전화 상담을 원하시면 <a href="tel:01046021953">010-4602-1953</a>로 연락 주셔도 됩니다.</p>
-      </form>
+        <a class="btn btn-dark cta-card-btn" href="level-test.html#apply">레벨 테스트 신청하기</a>
+
+        <p class="cta-card-alt">
+          전화 상담을 원하시면 <a href="tel:01046021953">010-4602-1953</a>로 연락 주셔도 됩니다.
+        </p>
+      </div>
     </div>
   </div>
 </section>
